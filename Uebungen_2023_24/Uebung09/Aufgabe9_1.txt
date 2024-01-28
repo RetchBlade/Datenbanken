@@ -1,0 +1,50 @@
+--Aufgabe 9.1 a)
+--Geben Sie alle Gebiete mit ID, Name und zugeh¨origem Namen der Region an.
+--Nutzen Sie eine Darstellung der Abfrage mit und ohne Verwendung des reservierten Wortes INNER JOIN.
+--Schauen Sie sich die Ergebnisse von LEFT OUTER JOIN, RIGHT OUTER JOIN, FULL
+--OUTER JOIN und CROSS JOIN an.
+
+-- Ohne inner join
+select gebiet.id, gebiet.gebietname, region.regionname from gebiet, region 
+where gebiet.regionid = region.id;
+
+-- mit inner join
+select g.id, g.gebietname, r.regionname from gebiet g 
+join region r 
+on g.regionid = r.id;
+
+-- mit left outer join
+select g.id, g.gebietname, r.regionname from gebiet g 
+left outer join region r 
+on g.regionid = r.id;
+
+-- mit right outer join
+select g.id, g.gebietname, r.regionname from gebiet g 
+right outer join region r 
+on g.regionid = r.id;
+
+-- mit Cross join
+select g.id, g.gebietname, r.regionname from gebiet g 
+Cross join region r;
+
+--Aufgabe 9.1 b)
+--Geben Sie alle Bestellungen aus, die an Kunden in Deutschland gehen. 
+--Es soll die Bestellnummer, das Bestelldatum sowie der Firmenname des jeweiligen Kunden ausgeben
+--werden.
+select b.bestellnummer,b.bestelldatum, k.firmenname from bestellung b 
+inner join kunde k on k.kundencode = b.kunde 
+inner join adresse a on a.id = k.adresseid 
+where a.land = 'Germany';
+
+--Aufgabe 9.1 c)
+--Welche Produkte werden an Kunden in Frankreich geliefert? Geben Sie den Artikelnamen
+--sowie den Namen des Kunden an, aber jede Kombination nur einmal. Geben Sie zus¨atzlich
+--alle franz¨osischen Kunden aus, die in der Datenbank gespeichert sind, fur die aber keine ¨
+--Bestellungen in der Datenbank vorhanden sind.
+select distinct a.artikelname ,k.firmenname from artikel a 
+inner join bestelldetails b on b.artikelnummer  = a.artikelnummer 
+inner join bestellung b2 on b.bestellnummer = b2.bestellnummer 
+right outer join kunde k on b2.kunde =k.kundencode
+inner join adresse a2 on k.adresseid = a2.id
+where a2.land = 'France';
+
